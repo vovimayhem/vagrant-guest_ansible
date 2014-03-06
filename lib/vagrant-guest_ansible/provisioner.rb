@@ -13,7 +13,8 @@ module VagrantPlugins
         args = [
           './ansible',
           config.playbook,
-          File.basename(self.setup_inventory_file)
+          File.basename(self.setup_inventory_file),
+          (config.extra_vars.blank? ? "''" : config.extra_vars.map { |k,v| "#{k}=#{v}" }.join(" "))
         ].join(' ')
         
         command = "chmod +x #{config.upload_path} && #{config.upload_path} #{args}"

@@ -29,8 +29,12 @@ if [ ! -d $ANSIBLE_DIR ]; then
         sudo git clone git://github.com/ansible/ansible.git ${ANSIBLE_DIR}
 fi
 
+if [ ! -z "$ANSIBLE_EXTRA_VARS" -a "$ANSIBLE_EXTRA_VARS" != " " ]; then
+        ANSIBLE_EXTRA_VARS=" --extra-vars \"$ANSIBLE_EXTRA_VARS\""
+fi
+
 cd ${ANSIBLE_DIR}
 cp /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && chmod -x ${TEMP_HOSTS}
 echo "Running Ansible as $USER:"
-bash -c "source hacking/env-setup && ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local"
+bash -c "source hacking/env-setup && ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local $ANSIBLE_EXTRA_VARS"
 rm ${TEMP_HOSTS}

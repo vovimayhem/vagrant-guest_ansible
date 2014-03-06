@@ -33,7 +33,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :guest_ansible do |guest_ansible|
-    guest_ansible.playbook = main_playbook
+    guest_ansible.playbook = "any_playbook.yml"
     guest_ansible.extra_vars = extra_vars
     guest_ansible.sudo = false
   end
@@ -52,9 +52,8 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   if Vagrant::Util::Platform.windows?
-    config.vm.provision :guest_ansible do |guest_ansible|
-      guest_ansible.playbook = "any_playbook.yml"
-      guest_ansible.sudo = false
+    config.vm.provision :guest_ansible do |ansible|
+      ansible.playbook = "any_playbook.yml"
     end
   else
     config.vm.provision :ansible do |ansible|
