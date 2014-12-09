@@ -16,25 +16,34 @@ if [ ! -f /vagrant/$ANSIBLE_HOSTS ]; then
         exit 2
 fi
 
-if [ ! -d $ANSIBLE_DIR ]; then
-        echo -n "Updating apt cache..."
-        sudo apt-get update -qq
-        echo " DONE!"
-
-        echo -n "Installing Ansible dependencies and Git..."
-        sudo apt-get install -y -qq git python-yaml python-paramiko python-jinja2
-        echo " DONE!"
-
-        # Clone ansible:
-        sudo git clone git://github.com/ansible/ansible.git ${ANSIBLE_DIR}
+if ! command -v ansible >/dev/null; then
+        echo "Installing Ansible dependencies and Git."
+        if command -v yum >/dev/null; then
+                sudo yum install -y git python python-devel
+        elif command -v apt-get >/dev/null; then
+                sudo apt-get update -qq
+                #sudo apt-get install -y -qq git python-yaml python-paramiko python-jinja2
+                sudo apt-get install -y -qq git python python-dev
+        else
+                echo "neither yum nor apt-get found!"
+                exit 1
+        fi
+        echo "Installing pip via easy_install."
+        wget http://peak.telecommunity.com/dist/ez_setup.py
+        sudo python ez_setup.py && rm -f ez_setup.py
+        sudo easy_install pip
+        # Make sure setuptools are installed crrectly.
+        sudo pip install setuptools --no-use-wheel --upgrade
+        echo "Installing required python modules."
+        sudo pip install paramiko pyyaml jinja2 markupsafe
+        sudo pip install ansible
 fi
 
 if [ ! -z "$ANSIBLE_EXTRA_VARS" -a "$ANSIBLE_EXTRA_VARS" != " " ]; then
         ANSIBLE_EXTRA_VARS=" --extra-vars \"$ANSIBLE_EXTRA_VARS\""
 fi
 
-cd ${ANSIBLE_DIR}
 cp /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && chmod -x ${TEMP_HOSTS}
 echo "Running Ansible as $USER:"
-bash -c "source hacking/env-setup && ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local $ANSIBLE_EXTRA_VARS"
+ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local $ANSIBLE_EXTRA_VARS
 rm ${TEMP_HOSTS}
