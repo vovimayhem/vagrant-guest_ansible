@@ -11,7 +11,6 @@ module VagrantPlugins
       def provision
 
         args = [
-          './ansible',
           config.playbook,
           File.basename(self.setup_inventory_file),
           format_extra_vars(config.extra_vars)
