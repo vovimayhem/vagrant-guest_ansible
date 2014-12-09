@@ -14,7 +14,7 @@ module VagrantPlugins
           './ansible',
           config.playbook,
           File.basename(self.setup_inventory_file),
-          (config.extra_vars.blank? ? "''" : config.extra_vars.map { |k,v| "#{k}=#{v}" }.join(" "))
+          format_extra_vars(config.extra_vars)
         ].join(' ')
         
         command = "chmod +x #{config.upload_path} && #{config.upload_path} #{args}"
@@ -53,6 +53,15 @@ module VagrantPlugins
       end
 
       protected
+
+      # converts the extra_vars to a properly formatted string
+      def format_extra_vars(extra_vars)
+        if extra_vars.kind_of?(String)
+          extra_vars.strip
+        elsif extra_vars.kind_of?(Hash)
+          extra_vars.map { |k,v| "#{k}=#{v}" }.join(" ")
+        end
+      end
 
       # This method yields the path to a script to upload and execute
       # on the remote server. This method will properly clean up the
