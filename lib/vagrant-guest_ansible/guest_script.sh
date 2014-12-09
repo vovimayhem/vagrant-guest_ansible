@@ -33,6 +33,10 @@ if [ ! -z "$ANSIBLE_EXTRA_VARS" -a "$ANSIBLE_EXTRA_VARS" != " " ]; then
         ANSIBLE_EXTRA_VARS=" --extra-vars \"$ANSIBLE_EXTRA_VARS\""
 fi
 
+# stream output and show colors
+export PYTHONUNBUFFERED=1
+export ANSIBLE_FORCE_COLOR=true
+
 cd ${ANSIBLE_DIR}
 cp /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && chmod -x ${TEMP_HOSTS}
 echo "Running Ansible as $USER:"
