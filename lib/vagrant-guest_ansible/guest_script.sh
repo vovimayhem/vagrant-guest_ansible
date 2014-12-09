@@ -33,8 +33,9 @@ if [ ! -z "$ANSIBLE_EXTRA_VARS" -a "$ANSIBLE_EXTRA_VARS" != " " ]; then
         ANSIBLE_EXTRA_VARS=" --extra-vars \"$ANSIBLE_EXTRA_VARS\""
 fi
 
-# stream output and show colors
+# stream output
 export PYTHONUNBUFFERED=1
+# show ANSI-colored output
 export ANSIBLE_FORCE_COLOR=true
 
 cd ${ANSIBLE_DIR}
