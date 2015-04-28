@@ -18,7 +18,7 @@ fi
 if ! command -v ansible >/dev/null; then
         echo "Installing Ansible dependencies and Git."
         if command -v yum >/dev/null; then
-                sudo yum install -y git python python-devel
+                sudo yum install -y gcc git python python-devel
         elif command -v apt-get >/dev/null; then
                 sudo apt-get update -qq
                 #sudo apt-get install -y -qq git python-yaml python-paramiko python-jinja2
