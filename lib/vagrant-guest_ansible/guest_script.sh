@@ -2,7 +2,7 @@
 
 ANSIBLE_PLAYBOOK=$1
 ANSIBLE_HOSTS=$2
-ANSIBLE_EXTRA_VARS=$3
+ANSIBLE_EXTRA_VARS="$3"
 TEMP_HOSTS="/tmp/ansible_hosts"
 
 if [ ! -f /vagrant/$ANSIBLE_PLAYBOOK ]; then
@@ -39,7 +39,7 @@ if ! command -v ansible >/dev/null; then
 fi
 
 if [ ! -z "$ANSIBLE_EXTRA_VARS" -a "$ANSIBLE_EXTRA_VARS" != " " ]; then
-        ANSIBLE_EXTRA_VARS=" --extra-vars \"$ANSIBLE_EXTRA_VARS\""
+        ANSIBLE_EXTRA_VARS=" --extra-vars $ANSIBLE_EXTRA_VARS"
 fi
 
 # stream output

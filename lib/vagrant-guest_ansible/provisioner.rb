@@ -56,7 +56,7 @@ module VagrantPlugins
         if extra_vars.kind_of?(String)
           extra_vars.strip
         elsif extra_vars.kind_of?(Hash)
-          extra_vars.map { |k,v| "#{k}=#{v}" }.join(" ")
+          "\"#{extra_vars.to_json.gsub('"', '\"')}\""
         end
       end
 
