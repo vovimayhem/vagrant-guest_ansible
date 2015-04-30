@@ -1,5 +1,3 @@
-
-
 module VagrantPlugins
   module GuestAnsible
     class Provisioner < Vagrant.plugin("2", :provisioner)
@@ -15,9 +13,9 @@ module VagrantPlugins
           File.basename(self.setup_inventory_file),
           format_extra_vars(config.extra_vars)
         ].join(' ')
-        
+
         command = "chmod +x #{config.upload_path} && #{config.upload_path} #{args}"
-        
+
         with_script_file do |path|
 
           # Upload the script to the machine
@@ -31,7 +29,7 @@ module VagrantPlugins
 
             @machine.ui.info(I18n.t("vagrant.provisioners.shell.running",
                                       script: path.to_s))
-            
+
             # Execute it with sudo
             comm.execute(command, sudo: config.sudo) do |type, data|
               if [:stderr, :stdout].include?(type)
@@ -58,7 +56,7 @@ module VagrantPlugins
         if extra_vars.kind_of?(String)
           extra_vars.strip
         elsif extra_vars.kind_of?(Hash)
-          extra_vars.map { |k,v| "#{k}=#{v}" }.join(" ")
+          "\"#{extra_vars.to_json.gsub('"', '\"')}\""
         end
       end
 
@@ -114,7 +112,7 @@ module VagrantPlugins
         return config.inventory_path if config.inventory_path
 
         ssh = @machine.ssh_info
-        
+
         generated_inventory_file =
           @machine.env.root_path.join("vagrant_ansible_inventory_#{machine.name}")
 
