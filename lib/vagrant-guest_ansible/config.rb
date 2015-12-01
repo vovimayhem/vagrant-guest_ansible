@@ -5,6 +5,7 @@ module VagrantPlugins
     class Config < Vagrant.plugin("2", :config)
       attr_accessor :playbook
       attr_accessor :extra_vars
+      attr_accessor :ansible_git_url
       attr_accessor :inventory_path
       attr_accessor :ask_sudo_pass
       attr_accessor :limit
@@ -23,6 +24,7 @@ module VagrantPlugins
       def initialize
         @playbook = UNSET_VALUE
         @extra_vars = UNSET_VALUE
+        @ansible_git_url = UNSET_VALUE
         @inventory_path = UNSET_VALUE
         @ask_sudo_pass = UNSET_VALUE
         @limit = UNSET_VALUE
@@ -56,6 +58,7 @@ module VagrantPlugins
       def finalize!
         @playbook = nil if @playbook == UNSET_VALUE
         @extra_vars = nil if @extra_vars == UNSET_VALUE
+        @ansible_git_url = nil if @ansible_git_url == UNSET_VALUE
         @inventory_path = nil if @inventory_path == UNSET_VALUE
         @ask_sudo_pass = nil if @ask_sudo_pass == UNSET_VALUE
         @limit = nil if @limit == UNSET_VALUE
