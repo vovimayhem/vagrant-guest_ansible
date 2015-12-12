@@ -7,11 +7,15 @@ module VagrantPlugins
       end
 
       def provision
-
         args = [
           config.playbook,
           File.basename(self.setup_inventory_file),
-          format_extra_vars(config.extra_vars)
+          config.extra_vars && "--extra-vars=#{format_extra_vars(config.extra_vars)}" || "",
+          config.vault_password_file && "--vault-password-file=#{config.vault_password_file}" || "",
+          config.tags && "--tags=#{format_tags(config.tags)}" || "",
+          config.skip_tags && "--skip-tags=#{format_tags(config.skip_tags)}" || "",
+          config.verbose && "-#{config.verbose}" || "",
+          config.start_at_task && "--start-at-task=#{config.start_at_task}" || ""
         ].join(' ')
 
         command = "chmod +x #{config.upload_path} && #{config.upload_path} #{args}"
@@ -52,11 +56,19 @@ module VagrantPlugins
       protected
 
       # converts the extra_vars to a properly formatted string
-      def format_extra_vars(extra_vars)
-        if extra_vars.kind_of?(String)
-          extra_vars.strip
-        elsif extra_vars.kind_of?(Hash)
-          "\"#{extra_vars.to_json.gsub('"', '\"')}\""
+      def format_extra_vars(arg)
+        if arg.kind_of?(String)
+          arg.strip
+        elsif arg.kind_of?(Hash)
+          "\"#{arg.to_json.gsub('"', '\"')}\""
+        end
+      end
+
+      def format_tags(arg)
+        if arg.kind_of?(String)
+          arg.strip
+        elsif arg.kind_of?(Array)
+          "\"#{arg.join(',')}\""
         end
       end
 

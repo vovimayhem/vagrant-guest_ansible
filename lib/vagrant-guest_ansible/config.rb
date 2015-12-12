@@ -15,6 +15,7 @@ module VagrantPlugins
       attr_accessor :skip_tags
       attr_accessor :start_at_task
       attr_accessor :groups
+      attr_accessor :vault_password_file
       attr_accessor :host_key_checking
 
       # Joker attribute, used to pass unsupported arguments to ansible anyway
@@ -34,6 +35,7 @@ module VagrantPlugins
         @start_at_task = UNSET_VALUE
         @raw_arguments = UNSET_VALUE
         @groups = UNSET_VALUE
+        @vault_password_file = UNSET_VALUE
         @host_key_checking = "true"
       end
 
@@ -66,6 +68,7 @@ module VagrantPlugins
         @skip_tags = nil if @skip_tags == UNSET_VALUE
         @start_at_task = nil if @start_at_task == UNSET_VALUE
         @raw_arguments = nil if @raw_arguments == UNSET_VALUE
+        @vault_password_file = nil if @vault_password_file == UNSET_VALUE
         @groups = {} if @groups == UNSET_VALUE
         @host_key_checking = nil if @host_key_checking == UNSET_VALUE
       end
