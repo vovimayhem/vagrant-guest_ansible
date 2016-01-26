@@ -9,7 +9,7 @@ module VagrantPlugins
       def provision
         args = [
           config.playbook,
-          File.basename(self.setup_inventory_file),
+          self.setup_inventory_file,
           config.extra_vars && "--extra-vars=#{format_extra_vars(config.extra_vars)}" || "",
           config.vault_password_file && "--vault-password-file=#{config.vault_password_file}" || "",
           config.tags && "--tags=#{format_tags(config.tags)}" || "",
@@ -158,7 +158,7 @@ module VagrantPlugins
           end
         end
 
-        return generated_inventory_file.to_s
+        return File.basename(generated_inventory_file.to_s)
       end
 
     end
