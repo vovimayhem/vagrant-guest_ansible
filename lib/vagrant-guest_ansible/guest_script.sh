@@ -28,9 +28,9 @@ if ! command -v ansible >/dev/null; then
                 exit 1
         fi
         echo "Installing pip via get-pip."
-        wget https://bootstrap.pypa.io/get-pip.py
+        curl --silent --show-error https://bootstrap.pypa.io/get-pip.py -O
         sudo python get-pip.py && rm -f get-pip.py
-        # Make sure setuptools are installed crrectly.
+        # Make sure setuptools are installed correctly.
         sudo pip install setuptools --no-use-wheel --upgrade
         echo "Installing required python modules."
         sudo pip install paramiko pyyaml jinja2 markupsafe
