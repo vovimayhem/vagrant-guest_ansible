@@ -18,7 +18,7 @@ fi
 if ! command -v ansible >/dev/null; then
         echo "Installing Ansible dependencies and Git."
         if command -v yum >/dev/null; then
-                sudo yum install -y gcc git wget python python-devel
+                sudo yum install -y gcc git python python-devel
         elif command -v apt-get >/dev/null; then
                 sudo apt-get update -qq
                 #sudo apt-get install -y -qq git python-yaml python-paramiko python-jinja2
@@ -28,9 +28,9 @@ if ! command -v ansible >/dev/null; then
                 exit 1
         fi
         echo "Installing pip via get-pip."
-        wget https://bootstrap.pypa.io/get-pip.py
+        curl --silent --show-error https://bootstrap.pypa.io/get-pip.py -O
         sudo python get-pip.py && rm -f get-pip.py
-        # Make sure setuptools are installed crrectly.
+        # Make sure setuptools are installed correctly.
         sudo pip install setuptools --no-use-wheel --upgrade
         echo "Installing required python modules."
         sudo pip install paramiko pyyaml jinja2 markupsafe
