@@ -3,6 +3,7 @@
 ANSIBLE_PLAYBOOK=$1
 ANSIBLE_HOSTS=$2
 ANSIBLE_EXTRA_VARS="$3"
+ANSIBLE_GIT_URL="$4"
 TEMP_HOSTS="/tmp/ansible_hosts"
 
 if [ ! -f /vagrant/$ANSIBLE_PLAYBOOK ]; then
@@ -34,7 +35,13 @@ if ! command -v ansible >/dev/null; then
         sudo pip install setuptools --no-use-wheel --upgrade
         echo "Installing required python modules."
         sudo pip install paramiko pyyaml jinja2 markupsafe
-        sudo pip install ansible
+
+        echo "Installing Ansible."
+        if [ ! -z "$ANSIBLE_GIT_URL" ]; then
+          sudo pip install -U -e git+${ANSIBLE_GIT_URL}#egg=ansible
+        else
+          sudo pip install ansible
+        fi
 fi
 
 if [ ! -z "$ANSIBLE_EXTRA_VARS" -a "$ANSIBLE_EXTRA_VARS" != " " ]; then

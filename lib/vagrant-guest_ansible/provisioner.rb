@@ -12,9 +12,13 @@ module VagrantPlugins
           config.playbook,
           File.basename(self.setup_inventory_file),
           format_extra_vars(config.extra_vars)
-        ].join(' ')
+        ]
 
-        command = "chmod +x #{config.upload_path} && #{config.upload_path} #{args}"
+        if !config.ansible_git_url.nil?
+          args << config.ansible_git_url
+        end
+
+        command = "chmod +x #{config.upload_path} && #{config.upload_path} #{args.join(' ')}"
 
         with_script_file do |path|
 
