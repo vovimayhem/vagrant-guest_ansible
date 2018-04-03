@@ -10,7 +10,7 @@ module VagrantPlugins
 
         args = [
           config.playbook,
-          File.basename(self.setup_inventory_file),
+          self.setup_inventory_file,
           format_extra_vars(config.extra_vars)
         ].join(' ')
 

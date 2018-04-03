@@ -10,7 +10,7 @@ if [ ! -f /vagrant/$ANSIBLE_PLAYBOOK ]; then
         exit 1
 fi
 
-if [ ! -f /vagrant/$ANSIBLE_HOSTS ]; then
+if [ ! -e /vagrant/$ANSIBLE_HOSTS ]; then
         echo "ERROR: Cannot find the given Ansible hosts file."
         exit 2
 fi
@@ -46,7 +46,7 @@ export PYTHONUNBUFFERED=1
 # show ANSI-colored output
 export ANSIBLE_FORCE_COLOR=true
 
-cp /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && chmod -x ${TEMP_HOSTS}
+cp -R /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && find ${TEMP_HOSTS} -type f -exec chmod -x {} \; 
 echo "Running Ansible as $USER:"
 ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local $ANSIBLE_EXTRA_VARS
-rm ${TEMP_HOSTS}
+rm -R ${TEMP_HOSTS}
