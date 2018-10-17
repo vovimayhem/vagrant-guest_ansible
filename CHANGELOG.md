@@ -1,3 +1,13 @@
+## 0.0.5
+
+BUG FIXES:
+
+  - Change property names from sudo to become to reflect ansible upgrades
+
+FEATURES:
+
+  - Add ansible-galaxy role-installation support
+
 ## 0.0.4
 
 BUG FIXES:
