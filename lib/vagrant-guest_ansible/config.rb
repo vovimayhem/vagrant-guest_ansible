@@ -6,10 +6,10 @@ module VagrantPlugins
       attr_accessor :playbook
       attr_accessor :extra_vars
       attr_accessor :inventory_path
-      attr_accessor :ask_sudo_pass
+      attr_accessor :ask_become_pass
       attr_accessor :limit
-      attr_accessor :sudo
-      attr_accessor :sudo_user
+      attr_accessor :become
+      attr_accessor :become_user
       attr_accessor :verbose
       attr_accessor :tags
       attr_accessor :skip_tags
@@ -24,10 +24,10 @@ module VagrantPlugins
         @playbook = UNSET_VALUE
         @extra_vars = UNSET_VALUE
         @inventory_path = UNSET_VALUE
-        @ask_sudo_pass = UNSET_VALUE
+        @ask_become_pass = UNSET_VALUE
         @limit = UNSET_VALUE
-        @sudo = UNSET_VALUE
-        @sudo_user = UNSET_VALUE
+        @become = UNSET_VALUE
+        @become_user = UNSET_VALUE
         @verbose = UNSET_VALUE
         @tags = UNSET_VALUE
         @skip_tags = UNSET_VALUE
@@ -57,10 +57,10 @@ module VagrantPlugins
         @playbook = nil if @playbook == UNSET_VALUE
         @extra_vars = nil if @extra_vars == UNSET_VALUE
         @inventory_path = nil if @inventory_path == UNSET_VALUE
-        @ask_sudo_pass = nil if @ask_sudo_pass == UNSET_VALUE
+        @ask_become_pass = nil if @ask_become_pass == UNSET_VALUE
         @limit = nil if @limit == UNSET_VALUE
-        @sudo = nil if @sudo == UNSET_VALUE
-        @sudo_user = nil if @sudo_user == UNSET_VALUE
+        @become = nil if @become == UNSET_VALUE
+        @become_user = nil if @become_user == UNSET_VALUE
         @verbose = nil if @verbose == UNSET_VALUE
         @tags = nil if @tags == UNSET_VALUE
         @skip_tags = nil if @skip_tags == UNSET_VALUE
