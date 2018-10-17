@@ -61,9 +61,9 @@ module VagrantPlugins
 
       def get_galaxy_command
         if @galaxy_role_file == UNSET_VALUE
-          "echo No roles to install"
+          nil
         else
-          "ansible-galaxy install"
+          "install"
         end
       end
 
