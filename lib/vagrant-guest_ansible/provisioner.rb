@@ -11,7 +11,10 @@ module VagrantPlugins
         args = [
           config.playbook,
           File.basename(self.setup_inventory_file),
-          format_extra_vars(config.extra_vars)
+          format_extra_vars(config.extra_vars),
+          config.galaxy_command,
+          "--role-file #{config.galaxy_role_file}",
+          "--roles-path #{config.galaxy_roles_path}"
         ].join(' ')
 
         command = "chmod +x #{config.upload_path} && #{config.upload_path} #{args}"

@@ -16,6 +16,9 @@ module VagrantPlugins
       attr_accessor :start_at_task
       attr_accessor :groups
       attr_accessor :host_key_checking
+      attr_accessor :galaxy_command
+      attr_accessor :galaxy_role_file
+      attr_accessor :galaxy_roles_path
 
       # Joker attribute, used to pass unsupported arguments to ansible anyway
       attr_accessor :raw_arguments
@@ -35,6 +38,9 @@ module VagrantPlugins
         @raw_arguments = UNSET_VALUE
         @groups = UNSET_VALUE
         @host_key_checking = "true"
+        @galaxy_command = UNSET_VALUE
+        @galaxy_role_file = UNSET_VALUE
+        @galaxy_roles_path = UNSET_VALUE
       end
 
       def path
@@ -53,6 +59,14 @@ module VagrantPlugins
         false
       end
 
+      def get_galaxy_command
+        if @galaxy_role_file == UNSET_VALUE
+          "echo No roles to install"
+        else
+          "ansible-galaxy install"
+        end
+      end
+
       def finalize!
         @playbook = nil if @playbook == UNSET_VALUE
         @extra_vars = nil if @extra_vars == UNSET_VALUE
@@ -68,6 +82,9 @@ module VagrantPlugins
         @raw_arguments = nil if @raw_arguments == UNSET_VALUE
         @groups = {} if @groups == UNSET_VALUE
         @host_key_checking = nil if @host_key_checking == UNSET_VALUE
+        @galaxy_command = get_galaxy_command if @galaxy_command == UNSET_VALUE
+        @galaxy_role_file = nil if @galaxy_role_file == UNSET_VALUE
+        @galaxy_roles_path = nil if @galaxy_roles_path == UNSET_VALUE
       end
 
       def validate(machine)
