@@ -44,6 +44,14 @@ if [ ! -z "$ANSIBLE_EXTRA_VARS" -a "$ANSIBLE_EXTRA_VARS" != " " ]; then
         ANSIBLE_EXTRA_VARS=" --extra-vars $ANSIBLE_EXTRA_VARS"
 fi
 
+if [ ! -z "$ANSIBLE_GALAXY_ROLE_FILE" -a "$ANSIBLE_GALAXY_ROLE_FILE" != " " ]; then
+        ANSIBLE_GALAXY_ROLE_FILE=" --role-file=/vagrant/$ANSIBLE_GALAXY_ROLE_FILE"
+fi
+
+if [ ! -z "$ANSIBLE_GALAXY_ROLES_PATH" -a "$ANSIBLE_GALAXY_ROLES_PATH" != " " ]; then
+        ANSIBLE_GALAXY_ROLES_PATH=" --roles-path=$ANSIBLE_GALAXY_ROLES_PATH"
+fi
+
 # stream output
 export PYTHONUNBUFFERED=1
 # show ANSI-colored output
@@ -51,7 +59,7 @@ export ANSIBLE_FORCE_COLOR=true
 
 cp /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && chmod -x ${TEMP_HOSTS}
 echo "Gathering roles from ansible-galaxy:"
-${ANSIBLE_GALAXY_COMMAND} ${ANSIBLE_GALAXY_ROLE_FILE} ${ANSIBLE_GALAXY_ROLES_PATH}
+ansible-galaxy ${ANSIBLE_GALAXY_COMMAND} ${ANSIBLE_GALAXY_ROLE_FILE} ${ANSIBLE_GALAXY_ROLES_PATH}
 echo "Running Ansible as $USER:"
 ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local $ANSIBLE_EXTRA_VARS
 rm ${TEMP_HOSTS}
