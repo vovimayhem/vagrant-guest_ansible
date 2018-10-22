@@ -12,7 +12,6 @@ module VagrantPlugins
           config.playbook,
           File.basename(self.setup_inventory_file),
           format_extra_vars(config.extra_vars),
-          "#{config.galaxy_command}",
           config.galaxy_role_file,
           config.galaxy_roles_path
         ].join(' ')
@@ -34,7 +33,7 @@ module VagrantPlugins
                                       script: path.to_s))
 
             # Execute it with sudo
-            comm.execute(command, sudo: config.sudo) do |type, data|
+            comm.execute(command, sudo: config.become) do |type, data|
               if [:stderr, :stdout].include?(type)
                 # Output the data with the proper color based on the stream.
                 color = type == :stdout ? :green : :red

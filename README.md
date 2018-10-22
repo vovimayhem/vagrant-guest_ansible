@@ -35,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :guest_ansible do |guest_ansible|
     guest_ansible.playbook = "any_playbook.yml"
     guest_ansible.extra_vars = extra_vars
-    guest_ansible.sudo = false
+    guest_ansible.become = false
   end
 end
 ```

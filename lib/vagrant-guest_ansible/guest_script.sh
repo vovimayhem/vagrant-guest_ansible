@@ -3,9 +3,8 @@
 ANSIBLE_PLAYBOOK=$1
 ANSIBLE_HOSTS=$2
 ANSIBLE_EXTRA_VARS="$3"
-ANSIBLE_GALAXY_COMMAND=$4
-ANSIBLE_GALAXY_ROLE_FILE=$5
-ANSIBLE_GALAXY_ROLES_PATH=$6
+ANSIBLE_GALAXY_ROLE_FILE=$4
+ANSIBLE_GALAXY_ROLES_PATH=$5
 TEMP_HOSTS="/tmp/ansible_hosts"
 
 if [ ! -f /vagrant/$ANSIBLE_PLAYBOOK ]; then
@@ -58,9 +57,9 @@ export PYTHONUNBUFFERED=1
 export ANSIBLE_FORCE_COLOR=true
 
 cp /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && chmod -x ${TEMP_HOSTS}
-if [ ! -z "$ANSIBLE_GALAXY_COMMAND" -a "$ANSIBLE_GALAXY_COMMAND" != " " ]; then
+if [ ! -z "$ANSIBLE_GALAXY_ROLE_FILE" -a "$ANSIBLE_GALAXY_ROLE_FILE" != " " ]; then
         echo "Gathering roles from ansible-galaxy:"
-        ansible-galaxy ${ANSIBLE_GALAXY_COMMAND} ${ANSIBLE_GALAXY_ROLE_FILE} ${ANSIBLE_GALAXY_ROLES_PATH}
+        ansible-galaxy install ${ANSIBLE_GALAXY_ROLE_FILE} ${ANSIBLE_GALAXY_ROLES_PATH}
 fi
 echo "Running Ansible as $USER:"
 ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local $ANSIBLE_EXTRA_VARS
